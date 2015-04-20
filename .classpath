@@ -1,0 +1,17 @@
+<classpath>
+  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/asm/asm-all/3.1/asm-all-3.1.jar" sourcepath="M2_REPO/asm/asm-all/3.1/asm-all-3.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/4.4/junit-4.4.jar" sourcepath="M2_REPO/junit/junit/4.4/junit-4.4-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/Users/czb/.m2/repository/junit/junit/4.4/junit-4.4-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/de/hammacher/utilities/1.2.10/utilities-1.2.10.jar" sourcepath="M2_REPO/de/hammacher/utilities/1.2.10/utilities-1.2.10-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/Users/czb/.m2/repository/de/hammacher/utilities/1.2.10/utilities-1.2.10-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+</classpath>
