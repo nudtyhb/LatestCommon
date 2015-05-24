@@ -25,7 +25,10 @@ package de.unisb.cs.st.javaslicer.common.classRepresentation.instructions;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.objectweb.asm.Opcodes;
@@ -50,8 +53,11 @@ public class MethodInvocationInstruction extends AbstractInstruction {
     public final boolean[] parameterIsLong;
     public final byte returnedSize; // 0, 1 or 2
     public boolean invokedCanReach;
-    public static Set<Integer> modifiedParam = new HashSet<Integer>(); 
-
+    public boolean unknownModification; // for the soundness of slicing, when we cannot get the invoked method info, it is set to true. 
+   //public static Set<Integer> modifiedParam = new HashSet<Integer>(); 
+    public static Map<String,Integer> modifiedParam=new HashMap<String,Integer>();
+    public static Map<Integer,String> locToVarName=new HashMap<Integer,String>();
+    
     public MethodInvocationInstruction(final ReadMethod readMethod, final int opcode,
             final int lineNumber, final String internalClassName, final String methodName,
             final String methodDesc) {
@@ -69,6 +75,7 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         org.objectweb.asm.Type returnType = org.objectweb.asm.Type.getReturnType(methodDesc);
         this.returnedSize = returnType == org.objectweb.asm.Type.VOID_TYPE ? 0 : (byte) returnType.getSize();
         this.invokedCanReach=false;
+        this.unknownModification=false;
     }
 
     public MethodInvocationInstruction(final ReadMethod readMethod, final int lineNumber, final int opcode,
@@ -87,6 +94,7 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         org.objectweb.asm.Type returnType = org.objectweb.asm.Type.getReturnType(methodDesc);
         this.returnedSize = returnType == org.objectweb.asm.Type.VOID_TYPE ? 0 : (byte) returnType.getSize();
         this.invokedCanReach=false;
+        this.unknownModification=false;
     }
 
     public String getInvokedInternalClassName() {

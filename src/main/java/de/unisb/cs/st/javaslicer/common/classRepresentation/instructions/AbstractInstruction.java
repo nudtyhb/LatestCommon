@@ -93,6 +93,7 @@ public  abstract class AbstractInstruction implements Instruction {
     protected final ReadMethod method; // the method it belongs to 
     private final int opcode; 
     private final int lineNumber; //  the corresponding lineNumber in source code
+    public String sourceLocation; // the fileInfo corresponds to this instr , added by yhb
 
     protected AbstractInstruction(final ReadMethod readMethod, final int opcode, final int lineNumber) {
         this(readMethod, opcode, lineNumber, nextIndex++);
