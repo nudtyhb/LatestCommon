@@ -42,8 +42,6 @@ import de.unisb.cs.st.javaslicer.common.classRepresentation.ReadMethod.MethodRea
 /**
  * Class representing a method invokation instruction (INVOKEVIRTUAL, INVOKESPECIAL, INVOKESTATIC or
  * INVOKEINTERFACE).
- *
- * @author Clemens Hammacher
  */
 public class MethodInvocationInstruction extends AbstractInstruction {
 
@@ -54,13 +52,16 @@ public class MethodInvocationInstruction extends AbstractInstruction {
     public final byte returnedSize; // 0, 1 or 2
     public boolean invokedCanReach;
     public boolean unknownModification; // for the soundness of slicing, when we cannot get the invoked method info, it is set to true. 
-   //public static Set<Integer> modifiedParam = new HashSet<Integer>(); 
-    public static Map<String,Integer> modifiedParam=new HashMap<String,Integer>();
-    public static Map<Integer,String> locToVarName=new HashMap<Integer,String>();
+    // key-->type of modification, 0,1,2 for local variable, array element and object field respectively  value--> the location of the modification
+    public static Map<Integer,Integer> modifiedParam=new HashMap<Integer,Integer>();  
+    // key-->the location of the modification, value--> the object name of the modified field, only have meaning for field type
+    public static Map<Integer,String> locToVarName=new HashMap<Integer,String>(); 
+    // key-->the location of the modification, value-->the array name of the modified array element
+    public static Map<Integer,String> locToArrName=new HashMap<Integer,String>();
     
     public MethodInvocationInstruction(final ReadMethod readMethod, final int opcode,
             final int lineNumber, final String internalClassName, final String methodName,
-            final String methodDesc) {
+            final String methodDesc) { 
         super(readMethod, opcode, lineNumber);
         assert opcode == Opcodes.INVOKEVIRTUAL || opcode == Opcodes.INVOKESPECIAL
             || opcode == Opcodes.INVOKESTATIC || opcode == Opcodes.INVOKEINTERFACE;

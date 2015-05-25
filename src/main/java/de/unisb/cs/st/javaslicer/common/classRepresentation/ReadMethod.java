@@ -26,6 +26,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
@@ -121,7 +122,18 @@ public class ReadMethod implements Comparable<ReadMethod> {
     public void ready() {
         this.instructions.trimToSize();
     }
-
+   
+    public AbstractInstruction[] getInstructionsInArray(){
+    	AbstractInstruction[] arr= new  AbstractInstruction[ this.instructions.size() ];
+    	Iterator<AbstractInstruction> iter=this.instructions.iterator();
+    	int i=0;
+    	while(iter.hasNext()){
+    		arr[i]=iter.next();
+    		i++;
+    	}
+    	return arr;
+    }
+    
     public List<AbstractInstruction> getInstructions() {
         return this.instructions;
     }
