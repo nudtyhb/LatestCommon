@@ -53,11 +53,11 @@ public class MethodInvocationInstruction extends AbstractInstruction {
     public boolean invokedCanReach;
     public boolean unknownModification; // for the soundness of slicing, when we cannot get the invoked method info, it is set to true. 
     // key-->type of modification, 0,1,2 for local variable, array element and object field respectively  value--> the location of the modification
-    public static Map<Integer,Integer> modifiedParam=new HashMap<Integer,Integer>();  
+    public /*static*/  final Map<Integer,Integer> modifiedParam;//=new HashMap<Integer,Integer>();    
     // key-->the location of the modification, value--> the object name of the modified field, only have meaning for field type
-    public static Map<Integer,String> locToVarName=new HashMap<Integer,String>(); 
+    public /*static*/final  Map<Integer,String> locToVarName;//=new HashMap<Integer,String>(); 
     // key-->the location of the modification, value-->the array name of the modified array element
-    public static Map<Integer,String> locToArrName=new HashMap<Integer,String>();
+    public /*static*/ final Map<Integer,String> locToArrName;//=new HashMap<Integer,String>();
     
     public MethodInvocationInstruction(final ReadMethod readMethod, final int opcode,
             final int lineNumber, final String internalClassName, final String methodName,
@@ -77,6 +77,9 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         this.returnedSize = returnType == org.objectweb.asm.Type.VOID_TYPE ? 0 : (byte) returnType.getSize();
         this.invokedCanReach=false;
         this.unknownModification=false;
+        modifiedParam=new HashMap<Integer,Integer>(); 
+        locToVarName=new HashMap<Integer,String>(); 
+        locToArrName=new HashMap<Integer,String>();
     }
 
     public MethodInvocationInstruction(final ReadMethod readMethod, final int lineNumber, final int opcode,
@@ -96,6 +99,28 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         this.returnedSize = returnType == org.objectweb.asm.Type.VOID_TYPE ? 0 : (byte) returnType.getSize();
         this.invokedCanReach=false;
         this.unknownModification=false;
+        modifiedParam=new HashMap<Integer,Integer>(); 
+        locToVarName=new HashMap<Integer,String>(); 
+        locToArrName=new HashMap<Integer,String>();
+    }
+    public void addModifiedParam(int a, int b){
+    	modifiedParam.put(a, b);
+    }
+    public void addLocToVarName(int a, String b){
+    	locToVarName.put(a, b);
+    }
+    public void addLocToArrName(int a, String b){
+    	locToArrName.put(a, b);
+    }
+    
+    public Map<Integer,Integer> getModifiedParam(){
+    	return this.modifiedParam;
+    }
+    public Map<Integer,String> getLocToVarName(){
+    	return this.locToVarName;
+    }
+    public Map<Integer,String> getLocToArrName(){
+    	return this.locToArrName;
     }
 
     public String getInvokedInternalClassName() {
