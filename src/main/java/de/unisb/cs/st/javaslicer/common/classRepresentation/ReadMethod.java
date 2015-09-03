@@ -79,6 +79,7 @@ public class ReadMethod implements Comparable<ReadMethod> {
     private LabelMarker abnormalTerminationLabel; 
     public LocalVariable[] localVariables;
     public int EntryIndexLabel;
+    public final String fullName;
 
     public ReadMethod(final ReadClass readClass, final int access, final String name, final String desc, final int instructionNumberStart) {
         this.readClass = readClass;
@@ -92,15 +93,39 @@ public class ReadMethod implements Comparable<ReadMethod> {
         // bei yhb zhushi
         this.localVariables = EMPTY_LOCAL_VARIABLES;
         this.EntryIndexLabel=0;
+        this.fullName=null;
+        
+        //added by yhb
+      //  this.localVariables=new LocalVariable[5];
+        //this.instructions=new UntracedArrayList<AbstractInstruction>();
+    }
+    public ReadMethod(final ReadClass readClass, final int access, final String name,final String fullName,  final String desc, final int instructionNumberStart) {
+        this.readClass = readClass;
+        this.access = access;
+        this.name = name;
+        this.desc = desc;
+        this.instructionNumberStart = instructionNumberStart;
+        // default: no instructions
+        this.instructionNumberEnd = instructionNumberStart;
+        
+        // bei yhb zhushi
+        this.localVariables = EMPTY_LOCAL_VARIABLES;
+        this.EntryIndexLabel=0;
+        this.fullName=fullName;
         
         //added by yhb
       //  this.localVariables=new LocalVariable[5];
         //this.instructions=new UntracedArrayList<AbstractInstruction>();
     }
 
+    
     //added by yhb
     public void addLocalVariable(LocalVariable var){
        this.localVariables[var.getIndex()]=var;
+    }
+    
+    public String getFullName(){
+    	return this.fullName;
     }
     
     public LocalVariable getLocalVariable(int index){
