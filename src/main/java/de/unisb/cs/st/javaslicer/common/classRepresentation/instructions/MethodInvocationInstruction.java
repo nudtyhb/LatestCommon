@@ -48,6 +48,7 @@ public class MethodInvocationInstruction extends AbstractInstruction {
     private final String internalClassName;
     private final String methodName;
     private final String methodDesc;
+    public final String fullNameOfInvokedMethod;
     public final boolean[] parameterIsLong;
     public final byte returnedSize; // 0, 1 or 2
     public boolean invokedCanReach;
@@ -80,6 +81,7 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         modifiedParam=new HashMap<Integer,Integer>(); 
         locToVarName=new HashMap<Integer,String>(); 
         locToArrName=new HashMap<Integer,String>();
+        fullNameOfInvokedMethod=null;
     }
 
     public MethodInvocationInstruction(final ReadMethod readMethod, final int lineNumber, final int opcode,
@@ -102,7 +104,36 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         modifiedParam=new HashMap<Integer,Integer>(); 
         locToVarName=new HashMap<Integer,String>(); 
         locToArrName=new HashMap<Integer,String>();
+        fullNameOfInvokedMethod=null;
     }
+    
+    public MethodInvocationInstruction(final ReadMethod readMethod, final int lineNumber, final int opcode,
+            final String internalClassName, final String methodName, final String methodDesc, final int index, final String fullName) {
+        super(readMethod, opcode, lineNumber, index);
+        assert opcode == Opcodes.INVOKEVIRTUAL || opcode == Opcodes.INVOKESPECIAL
+            || opcode == Opcodes.INVOKESTATIC || opcode == Opcodes.INVOKEINTERFACE;
+        this.internalClassName = internalClassName;
+        this.methodName = methodName;
+        this.methodDesc = methodDesc;
+        final org.objectweb.asm.Type[] parameterTypes = org.objectweb.asm.Type.getArgumentTypes(methodDesc);
+        this.parameterIsLong = new boolean[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; ++i) {
+            this.parameterIsLong[i] = parameterTypes[i].getSize() == 2;
+        }
+        org.objectweb.asm.Type returnType = org.objectweb.asm.Type.getReturnType(methodDesc);
+        this.returnedSize = returnType == org.objectweb.asm.Type.VOID_TYPE ? 0 : (byte) returnType.getSize();
+        this.invokedCanReach=false;
+        this.unknownModification=false;
+        modifiedParam=new HashMap<Integer,Integer>(); 
+        locToVarName=new HashMap<Integer,String>(); 
+        locToArrName=new HashMap<Integer,String>();
+        fullNameOfInvokedMethod=fullName;
+    }
+    
+    public String getFullNameOfInvokedMethod(){
+    	return this.fullNameOfInvokedMethod; 
+    }
+    
     public void addModifiedParam(int a, int b){
     	modifiedParam.put(a, b);
     }
