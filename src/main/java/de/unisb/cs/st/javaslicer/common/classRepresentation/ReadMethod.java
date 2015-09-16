@@ -25,7 +25,9 @@ package de.unisb.cs.st.javaslicer.common.classRepresentation;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
@@ -40,21 +42,21 @@ import de.unisb.cs.st.javaslicer.common.classRepresentation.instructions.Abstrac
 import de.unisb.cs.st.javaslicer.common.classRepresentation.instructions.LabelMarker;
 import de.unisb.cs.st.javaslicer.common.util.UntracedArrayList;
 
-public class ReadMethod implements Comparable<ReadMethod> {
+public class ReadMethod implements Comparable<ReadMethod> {   
 
     public static class MethodReadInformation {
 
         private final ReadMethod method;
         protected final IntegerMap<LabelMarker> labels = new IntegerMap<LabelMarker>();
-
+        
         public MethodReadInformation(final ReadMethod method) {
-            this.method = method;
+            this.method = method; 
         }
 
         public ReadMethod getMethod() {
             return this.method;
         }
-
+        
         public LabelMarker getLabel(final int labelNr) throws IOException {
             final LabelMarker lm = this.labels.get(labelNr);
             if (lm == null)
@@ -63,7 +65,7 @@ public class ReadMethod implements Comparable<ReadMethod> {
         }
 
     }
-
+    
 	private static final LocalVariable[] EMPTY_LOCAL_VARIABLES = new LocalVariable[0];
 
     public   UntracedArrayList<AbstractInstruction> instructions = new UntracedArrayList<AbstractInstruction>();
@@ -80,6 +82,7 @@ public class ReadMethod implements Comparable<ReadMethod> {
     public LocalVariable[] localVariables;
     public int EntryIndexLabel;
     public final String fullName;
+     
 
     public ReadMethod(final ReadClass readClass, final int access, final String name, final String desc, final int instructionNumberStart) {
         this.readClass = readClass;
