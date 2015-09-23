@@ -25,6 +25,7 @@ package de.unisb.cs.st.javaslicer.common.classRepresentation.instructions;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,6 +34,7 @@ import java.util.Set;
 
 import org.objectweb.asm.Opcodes;
 
+import de.hammacher.util.Pair;
 import de.hammacher.util.StringCacheInput;
 import de.hammacher.util.StringCacheOutput;
 import de.unisb.cs.st.javaslicer.common.classRepresentation.InstructionType;
@@ -60,6 +62,9 @@ public class MethodInvocationInstruction extends AbstractInstruction {
     // key-->the location of the modification, value-->the array name of the modified array element
     public /*static*/ final Map<Integer,String> locToArrName;//=new HashMap<Integer,String>();
     
+    public final Map<Integer,Integer> specialLabel; //for array
+    public final Map<Long,String> specialLabelForField;
+    
     public MethodInvocationInstruction(final ReadMethod readMethod, final int opcode,
             final int lineNumber, final String internalClassName, final String methodName,
             final String methodDesc) { 
@@ -81,6 +86,8 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         modifiedParam=new HashMap<Integer,Integer>(); 
         locToVarName=new HashMap<Integer,String>(); 
         locToArrName=new HashMap<Integer,String>();
+        specialLabel=new HashMap<Integer,Integer>();
+        specialLabelForField=new HashMap<Long,String>();
         fullNameOfInvokedMethod=null;
     }
 
@@ -104,6 +111,8 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         modifiedParam=new HashMap<Integer,Integer>(); 
         locToVarName=new HashMap<Integer,String>(); 
         locToArrName=new HashMap<Integer,String>();
+        specialLabel=new HashMap<Integer,Integer>();
+        specialLabelForField=new HashMap<Long,String>();
         fullNameOfInvokedMethod=null;
     }
     
@@ -127,6 +136,8 @@ public class MethodInvocationInstruction extends AbstractInstruction {
         modifiedParam=new HashMap<Integer,Integer>(); 
         locToVarName=new HashMap<Integer,String>(); 
         locToArrName=new HashMap<Integer,String>();
+        specialLabel=new HashMap<Integer,Integer>();
+        specialLabelForField=new HashMap<Long,String>();
         fullNameOfInvokedMethod=fullName;
     }
     
@@ -142,6 +153,12 @@ public class MethodInvocationInstruction extends AbstractInstruction {
     }
     public void addLocToArrName(int a, String b){
     	locToArrName.put(a, b);
+    }
+    public void addSpecialLabel(int a, int b){
+    	specialLabel.put(a, b);
+    }
+    public void addSpecialLabelForField(long a,String b){
+    	specialLabelForField.put(a, b);
     }
     
     public Map<Integer,Integer> getModifiedParam(){
